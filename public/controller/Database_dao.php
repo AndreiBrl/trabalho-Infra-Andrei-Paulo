@@ -11,16 +11,33 @@ class Database_dao
         self::$db = dbConnection::getConnect();
     }
 
-    // function insertTrabalhador()
-    // {
-    // 
-    // }
+    function insertProduto()
+    {
+        $con = self::$db;
+        $sql = "INSERT INTO lojaEsportiva.produtos
+                (nome, preco)
+                VALUES (:nome, :preco);";
+        $stmt = $con->prepare($sql);
+        $stmt->bindValue(':nome', $_POST["nome"]);
+        $stmt->bindValue(':preco', $_POST['preco']);
+       
+        $stmt->execute();
+     
+    }
 
+    public static function buscarPorId($id)
+    {
+        
+        $con = self::$db;
+        $sql = "SELECT * FROM lojaEsportiva.produtos WHERE id = :id";
+        $stmt = $con->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        //var_dump($resultado);
+        header('Location: ../index.php?nome='.$resultado['nome'].'&preco='.$resultado['preco']);
+    }
 
-    // public static function buscarPorId($id)
-    // {
-    //     
-    // }
     public static function buscar()
     {
         $con = self::$db;
@@ -29,7 +46,6 @@ class Database_dao
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
     public static function deletarProduto($id)
     {
@@ -42,10 +58,19 @@ class Database_dao
 
         header('Location: ../index.php');
     }
-//     public static function alterarTrabalhador($id)
-//     {
-//       
-// }
+
+    public static function alterarProduto($id)
+    {
+        $con = self::$db;
+        $sql = "UPDATE lojaEsportiva.produtos SET nome = :nome, preco = :preco WHERE id = :id";
+        $stmt = $con->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':nome', $_POST["nome"]);
+        $stmt->bindValue(':preco', $_POST['preco']);
+
+        $stmt->execute();
+    }
+
 }
 
 
@@ -59,17 +84,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['alterar'])) {
         $id = $_POST['alterar'];
-        $formDAO->alterarTrabalhador($id);
-        error_log("O parâmetro alterar está presente na solicitação GET. Valor: $id");
-        header('Location: dados.php');
-
+        $dao->alterarProduto($id);
+        error_log("O parâmetro alterar está presente na solicitação POST. Valor: $id");
+        header('Location: ../index.php');
+        exit;
+        
+    } else if (isset($_POST['buscarPorId'])) {
+        $id = $_POST['buscarPorId'];
+        $dao->buscarPorId($id);
+        //header('Location: ../index.php');
+        
     } else {
-
-        $formDAO->insertTrabalhador();
+        
+        $dao->insertProduto();
+        header('Location: ../index.php');
     }
-
-
 }
+
 
 
 
@@ -84,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
     
 
 }
-
 
 
 

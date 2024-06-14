@@ -1,8 +1,10 @@
 <?php
 
+
 require_once 'controller/Database_dao.php';
 $dao = new Database_dao();
 $resultados = $dao->buscar();
+
 
 ?>
 
@@ -54,7 +56,7 @@ $resultados = $dao->buscar();
                     <div>
 
                         <label for="buscarId">Id:</label>
-                        <input type="text" name="buscarId">
+                        <input type="text" name="buscarPorId">
                         <input type="submit" value="Buscar">
                     </div>
                 </form>
@@ -62,18 +64,18 @@ $resultados = $dao->buscar();
 
 
             </div>
-            <form action="controller/Database_dao.php" method="POST">
+            <form method="POST">
+                
                 <div>
 
                     <label for="nome">Nome:</label>
-                    <input name="nome" type="text">
+                    <input name="nome" type="text" value ="<?= $_GET['nome']??''?>">
                 </div>
                 <div>
 
-
                     <label for="preco">Preço:</label>
-                    <input name="preco" type="text">
-                    <input type="hidden" name="alterar" value="trocar pelo id">
+                    <input name="preco" type="text" value ="<?= $_GET['preco']??''?>">
+                    <input type="hidden" name="alterar" value="<?= $_GET['id'] ?? ''?>">
                 </div>
 
                 <input type="submit" value="Alterar">
@@ -93,10 +95,9 @@ $resultados = $dao->buscar();
                     </div>
                     <div>
 
-
                         <label for="preco">Preço:</label>
                         <input name="preco" type="text">
-                        <input type="hidden" name="inserir" value="trocar pelo id">
+                        <input type="hidden" name="inserir" >
                     </div>
 
                     <input type="submit" value="Inserir">
