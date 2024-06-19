@@ -34,8 +34,7 @@ class Database_dao
         $stmt->bindValue(':id', $id);
         $stmt->execute();
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-        //var_dump($resultado);
-        header('Location: ../index.php?nome='.$resultado['nome'].'&preco='.$resultado['preco']);
+        header('Location: ../index.php?nome='.$resultado['nome'].'&preco='.$resultado['preco'].'&id='.$resultado['id']);
     }
 
     public static function buscar()
@@ -61,12 +60,13 @@ class Database_dao
 
     public static function alterarProduto($id)
     {
+  
         $con = self::$db;
         $sql = "UPDATE lojaEsportiva.produtos SET nome = :nome, preco = :preco WHERE id = :id";
         $stmt = $con->prepare($sql);
-        $stmt->bindValue(':id', $id);
         $stmt->bindValue(':nome', $_POST["nome"]);
         $stmt->bindValue(':preco', $_POST['preco']);
+        $stmt->bindValue(':id', $id);
 
         $stmt->execute();
     }

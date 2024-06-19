@@ -5,7 +5,6 @@ require_once 'controller/Database_dao.php';
 $dao = new Database_dao();
 $resultados = $dao->buscar();
 
-
 ?>
 
 <div class="container">
@@ -18,7 +17,6 @@ $resultados = $dao->buscar();
                     <th>Nome</th>
                     <th>Preço</th>
                     <th>Deletar</th>
-                    <th>Alterar</th>
 
                 </tr>
 
@@ -33,11 +31,6 @@ $resultados = $dao->buscar();
                         <td>
                             <a href="controller/Database_dao.php?deletar=<?= $resultado['id'] ?>">
                                 ❌
-                            </a>
-                        </td>
-                        <td>
-                            <a href="controller/Database_dao.php?alterar=<?= $resultado['id'] ?>">
-                                ✏️
                             </a>
                         </td>
 
@@ -64,7 +57,7 @@ $resultados = $dao->buscar();
 
 
             </div>
-            <form method="POST">
+            <form action="controller/Database_dao.php" method="POST">
                 
                 <div>
 
